@@ -1,0 +1,31 @@
+name: "Static analysis"
+
+on: [push]
+
+jobs:
+  static-analysis:
+    name: Run ledger static analysis
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Build the middleware docker image
+        run: docker/mware/build
+
+      - name: Run static analysis
+        run: |
+          ledger/static-analysis/gen-static-analysis
+      
+      - name: Generate Markdown report
+        if: always()
+        run: |
+          python ledger/static-analysis/gen-report.py \
+            -d ledger/static-analysis/output \
+            -o ledger/static-analysis/output/report.md
+
+      - name: Write to job summary
+        if: always()
+        run: |
+          cat ledger/static-analysis/output/report.md > $GITHUB_STEP_SUMMARY

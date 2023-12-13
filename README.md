@@ -5,7 +5,7 @@
 ![C linter](https://github.com/rsksmart/rsk-powhsm/actions/workflows/lint-c.yml/badge.svg)
 [![Middleware coverage](https://img.shields.io/endpoint?url=https://d16sboe9lzo4ru.cloudfront.net/powhsm_4.1.x/middleware_coverage_report/badge.json)](https://d16sboe9lzo4ru.cloudfront.net/powhsm_4.1.x/middleware_coverage_report/index.html)
 [![Firmware coverage](https://img.shields.io/endpoint?url=https://d16sboe9lzo4ru.cloudfront.net/powhsm_4.1.x/firmware_coverage_report/badge.json)](https://d16sboe9lzo4ru.cloudfront.net/powhsm_4.1.x/firmware_coverage_report/index.html)
-
+![Static analysis](https://github.com/rsksmart/rsk-powhsm/actions/workflows/static-analysis.yml/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 ## About
