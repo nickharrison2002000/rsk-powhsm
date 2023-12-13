@@ -1,0 +1,61 @@
+#!/bin/bash
+
+if [[ $1 == "exec" ]]; then
+    BASEDIR=$(realpath $(dirname $0))
+    SRCDIR=$(realpath $BASEDIR/../src)
+    REPOROOT=$(realpath $BASEDIR/../..)
+
+    # Remove any existing static analysis data
+    rm -rf $BASEDIR/output && mkdir $BASEDIR/output
+
+    CCCHECKER=cppcheck
+    CCCHECKER_FLAGS="--quiet --enable=warning --inline-suppr --error-exitcode=1 --xml --xml-version=2"
+
+    found_errors=0
+    # Run static analysis on ledger common
+    COMMON_SRC_DIR=$SRCDIR/common/src
+    find $COMMON_SRC_DIR -name "*.[ch]" | \
+    xargs ${CCCHECKER} ${CCCHECKER_FLAGS} 2> $BASEDIR/output/common.xml
+    if [[ $? -ne 0 ]]; then
+        found_errors=1
+    fi
+
+    # Run static analysis on ledger signer
+    SIGNER_SRC_DIR=$SRCDIR/signer/src
+    find $SIGNER_SRC_DIR -name "*.[ch]" | \
+    egrep -v "(bigdigits|bigdtypes|keccak256)\.[ch]$" | \
+    xargs ${CCCHECKER} ${CCCHECKER_FLAGS} 2> $BASEDIR/output/signer.xml
+    if [[ $? -ne 0 ]]; then
+        found_errors=1
+    fi
+
+    # Run static analysis on ledger ui
+    UI_SRC_DIR=$SRCDIR/ui/src
+    find $UI_SRC_DIR -name "*.[ch]" | \
+    xargs ${CCCHECKER} ${CCCHECKER_FLAGS} 2> $BASEDIR/output/ui.xml
+    if [[ $? -ne 0 ]]; then
+        found_errors=1
+    fi
+
+    # Run static analysis on ledger tcpsigner
+    TCPSIGNER_SRC_DIR=$SRCDIR/tcpsigner
+    find $TCPSIGNER_SRC_DIR -name "*.[ch]" | \
+    egrep -v "(bigdigits|bigdtypes|cJSON)\.[ch]$" | \
+    xargs ${CCCHECKER} ${CCCHECKER_FLAGS} 2> $BASEDIR/output/tcpsigner.xml
+    if [[ $? -ne 0 ]]; then
+        found_errors=1
+    fi
+
+    # If any of the checks above found an error, we want this script to fail to inform the CI.
+    err_code=$found_errors
+else
+    # Script directory
+    REPOROOT=$(realpath $(dirname $0)/../..)
+    SCRIPT=$(realpath $0 --relative-to=$REPOROOT)
+
+    # Generate coverage report
+    $REPOROOT/docker/mware/do-notty-nousb /hsm2 "./$SCRIPT exec"
+    err_code=$?
+fi
+
+exit $err_code
