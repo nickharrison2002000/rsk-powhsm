@@ -382,7 +382,7 @@ void main(int argc, char **argv) {
 #ifdef __AFL_HAVE_MANUAL_CONTROL
     while (__AFL_LOOP(10000)) {
 #endif
-        FILE *inputfd;
+        FILE *inputfd = NULL;
         if (arguments.filemode) {
             info("Using file %s as input\n", arguments.inputfile);
             if ((inputfd = fopen(arguments.inputfile, "rb")) == NULL) {
@@ -399,7 +399,7 @@ void main(int argc, char **argv) {
             os_io_set_server(server);
         }
 
-        FILE *replicafd;
+        FILE *replicafd = NULL;
         if (strlen(arguments.replicafile) > 0) {
             info("Using file %s as replica\n", arguments.replicafile);
             if ((replicafd = fopen(arguments.replicafile, "ab")) == NULL) {

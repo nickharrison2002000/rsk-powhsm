@@ -32,7 +32,6 @@
 #include "btcscript.h"
 
 #define BTCTX_LENGTH_SIZE 4
-#define SIGHASH_ALL_SIZE 4
 #define SIGHASH_ALL_BYTES \
     { 0x01, 0x00, 0x00, 0x00 }
 

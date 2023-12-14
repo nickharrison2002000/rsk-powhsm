@@ -63,7 +63,7 @@ static void trie_cb(const trie_cb_event_t event) {
     switch (event) {
     case TRIE_EV_FLAGS:
         if (TRIE_FG_VERSION(auth.trie.ctx.flags) != AUTH_TRIE_NODE_VERSION) {
-            LOG("[E] Invalid node version: %u\n",
+            LOG("[E] Invalid node version: %d\n",
                 TRIE_FG_VERSION(auth.trie.ctx.flags));
             THROW(ERR_AUTH_NODE_INVALID_VERSION);
         }
@@ -209,7 +209,7 @@ unsigned int auth_sign_handle_merkleproof(volatile unsigned int rx) {
                                         APDU_DATA_SIZE(rx) - apdu_offset);
 
             if (trie_result() < 0) {
-                LOG("[E] Error parsing MP node: %u\n", trie_result());
+                LOG("[E] Error parsing MP node: %d\n", trie_result());
                 // Reusing an existing error code due to legacy protocol
                 THROW(ERR_AUTH_RECEIPT_ROOT_MISMATCH);
             } else if (trie_result() == TRIE_ST_DONE) {

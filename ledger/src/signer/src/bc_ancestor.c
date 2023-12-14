@@ -341,7 +341,7 @@ unsigned int bc_upd_ancestor(volatile unsigned int rx) {
     // OP_HEADER_META
     // -------------------------------------------------------------------
     if (op == OP_UPD_ANCESTOR_HEADER_META) {
-        LOG("---- Block %u of %u\n", curr_block + 1, expected_blocks);
+        LOG("---- Block %lu of %lu\n", curr_block + 1, expected_blocks);
 
         // Clear block data
         memset(&block, 0, sizeof(block));

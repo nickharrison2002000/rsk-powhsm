@@ -100,7 +100,7 @@ static void btctx_cb(const btctx_cb_event_t event) {
         }
 
         if (btcscript_result() < 0) {
-            LOG("[E] Error %u parsing the scriptSig", btcscript_result());
+            LOG("[E] Error %d parsing the scriptSig", btcscript_result());
             THROW(ERR_AUTH_TX_HASH_MISMATCH);
         }
 
@@ -184,7 +184,7 @@ unsigned int auth_sign_handle_btctx(volatile unsigned int rx) {
         // Add SIGHASH_ALL hash type at the end
         sha256_update(&auth.tx.sig_hash_ctx,
                       (uint8_t[])SIGHASH_ALL_BYTES,
-                      sizeof(SIGHASH_ALL_SIZE));
+                      sizeof((uint8_t[])SIGHASH_ALL_BYTES));
         sha256_final(&auth.tx.sig_hash_ctx, auth.sig_hash);
 
         sha256_init(&auth.tx.sig_hash_ctx);

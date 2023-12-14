@@ -46,8 +46,10 @@ cJSON* read_json_file(char* file_path) {
 
     // Allocate buffer
     buffer = (char*)malloc(file_size * sizeof(char));
-    if (buffer == NULL)
+    if (buffer == NULL) {
+        fclose(key_file);
         return NULL;
+    }
 
     // Read into buffer and close the file
     fread(buffer, sizeof(char), file_size, key_file);
