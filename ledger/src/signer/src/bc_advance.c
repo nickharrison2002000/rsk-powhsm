@@ -530,6 +530,7 @@ static void str_start(const uint16_t size) {
     // Prepare for the processing of the merkle proof
     // if we don't already know this block is valid
     // or we are processing a brother
+    // cppcheck-suppress syntaxError
     if (block.field == F_MERKLE_PROOF && !BLOCK_ALREADY_VALID()) {
         if (size % HASH_SIZE != 0) {
             FAIL(MERKLE_PROOF_INVALID);
